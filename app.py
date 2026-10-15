@@ -5,7 +5,6 @@ from langchain_text_splitters import CharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_community.vectorstores import FAISS
 from langchain_classic.chains.question_answering import load_qa_chain
-from langchain_core.callbacks import get_usage_metadata_callback
 
 def main():
     load_dotenv()
@@ -43,12 +42,8 @@ def main():
             
             llm = ChatGoogleGenerativeAI(model = "gemini-3.7-flash")
             chain = load_qa_chain(llm, chain_type='stuff')
-            with get_usage_metadata_callback() as cb:
-                response = chain.run(input_documents = docs, question = user_question)
-                st.write(response)
-            
-                st.divider()
-                st.write(cb)
+            response = chain.run(input_documents = docs, question = user_question)
+            st.write(response)
 
 if __name__ == '__main__':
     main()
